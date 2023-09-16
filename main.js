@@ -1,71 +1,82 @@
+const numberOfIngredients = 3; // Количество ингредиентов
+
 let ingredientCalories = 0 //Калорийность ингредиента
 let totalCalories = 0 //Общая калорийность блюда
 let ingredientArray = [] //Массив для хранения калорий ингредиентов
+let index = 0 //Индекс продукта
 
 // Функция выводит текст в документ
-function printText (text) {
-  document.write(text)
+function printText(text, className) {
+  let paragraph = document.createElement('p')
+  paragraph.textContent = text
+  paragraph.classList.add(className)
+  return paragraph
 }
 
 // Функция выводит один ингредиент с описанием
-function listItemIngredient(index, title, calories, weight) {
-  ingredientCalories = calories *  weight //калорийность 1 ингредиента
+function listItemIngredient(index, title, caloriesPer100g, weight) {
+  ingredientCalories = Math.round((caloriesPer100g * weight) / 100) //калорийность 1 ингредиента
   totalCalories = totalCalories + ingredientCalories // Прибавляем к общей калорийности блюда
-  printText(`<li class = 'list__item'>
+
+  let listItem = document.createElement('li')
+  listItem.classList.add('list__item')
+
+  //переменная textContent принимает строку 
+  let textContent = `
             ${index + ')'}
             ${title},
-            калорийность: ${calories} ккал,
+            калорийность: ${caloriesPer100g} ккал,
             вес: ${weight} гр,
             всего: ${ingredientCalories} ккал
-            </li>`)
+            `
+
+  //переменная принимает функцию,которая принимает 2 аргумента/ 
+  // 1 аргумент название переменной с текстовым контентом и 2 аргумент название класса
+  let paragraph = printText(textContent, 'list__item-paragraph')
+
+  listItem.append(paragraph)
+  return listItem
 }
 
 // Функция вывода суммарной калорийности блюда
 function totalAllDishCalories(value) {
-  printText(`<div class="total">
-                    Калорийность всего блюда: ${totalCalories} ккал
-                  </div>`)
+
+  const totalDishCalWrapper = document.createElement('div')
+  totalDishCalWrapper.classList.add('total')
+
+  let text = `Калорийность всего блюда: ${value} ккал`
+
+  totalDishCalWrapper.append(text)
+  return totalDishCalWrapper
 }
 
-printText(`<div class = 'container'>`)
+const container = document.createElement('div')
+container.classList.add('container')
 
-printText(`<h1 class = 'subtitle'>
-                Калькулятор калорийности блюда
-                </h1>`)
-
-printText(`<ul class = 'list'>`)
-
-let index = 0
+const title = document.createElement('h1')
+title.classList.add('subtitle')
+title.textContent = `Калькулятор калорийности блюда`
 
 
-// Ингредиент 1 
-index++
-let nameOfIngredient = prompt(`Введите название ингедиента ${index}`)
-let caloriesOfIngredient = Number(prompt(`Введите калорийность ингредиента ${index}`))
-let weightOfIngredient = Number(prompt(`Введите вес ингредиента ${index}`))
-listItemIngredient(index, nameOfIngredient, caloriesOfIngredient, weightOfIngredient)
+let list = document.createElement('ul')
+list.classList.add('list')
 
-// Ингредиент 2
-index++
-nameOfIngredient = prompt(`Введите название ингедиента ${index}`)
-caloriesOfIngredient = Number(prompt(`Введите калорийность ингредиента ${index}`))
-weightOfIngredient = Number(prompt(`Введите вес ингредиента ${index}`))
-listItemIngredient(index, nameOfIngredient, caloriesOfIngredient, weightOfIngredient)
+//Цикл принимает данные об ингредиенте и выводит их 
+for (let i = 1; i <= numberOfIngredients; i++) {
+  index++; // Увеличиваем индекс
 
-// Ингредиент 3
-index++
-nameOfIngredient = prompt(`Введите название ингедиента ${index}`)
-caloriesOfIngredient = Number(prompt(`Введите калорийность ингредиента ${index}`))
-weightOfIngredient = Number(prompt(`Введите вес ингредиента ${index}`))
-listItemIngredient(index, nameOfIngredient, caloriesOfIngredient, weightOfIngredient)
+  let nameOfIngredient = prompt(`Введите название ингредиента ${index}`);
+  let caloriesOfIngredient = Number(prompt(`Введите калорийность ингредиента ${index}`));
+  let weightOfIngredient = Number(prompt(`Введите вес ингредиента ${index}`));
 
-printText(`</ul>`)
+  let listItem = listItemIngredient(index, nameOfIngredient, caloriesOfIngredient, weightOfIngredient);
+  list.append(listItem);
+}
 
-printText(`<div class = 'total-calories-wrapper'>`)
+//Блок калорийности всего блюда
+let finalCalories = totalAllDishCalories(totalCalories)
 
-totalAllDishCalories(totalCalories)
-                
-printText(`</div>`)
 
-printText(`</div>`)
-
+// list.append(listItem1, listItem2, listItem3)
+container.append(title, list, finalCalories)
+document.body.append(container)
