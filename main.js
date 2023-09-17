@@ -25,9 +25,9 @@ function listItemIngredient(index, title, caloriesPer100g, weight) {
   let textContent = `
             ${index + ')'}
             ${title},
-            калорийность: ${caloriesPer100g} ккал,
-            вес: ${weight} гр,
-            всего: ${ingredientCalories} ккал
+            calories: ${caloriesPer100g} kcal,
+            weight: ${weight} gram,
+            total: ${ingredientCalories} kcal
             `
 
   //переменная принимает функцию,которая принимает 2 аргумента/ 
@@ -44,7 +44,7 @@ function totalAllDishCalories(value) {
   const totalDishCalWrapper = document.createElement('div')
   totalDishCalWrapper.classList.add('total')
 
-  let text = `Калорийность всего блюда: ${value} ккал`
+  let text = `Total calories of dish: ${value} kcal`
 
   totalDishCalWrapper.append(text)
   return totalDishCalWrapper
@@ -55,7 +55,7 @@ container.classList.add('container')
 
 const title = document.createElement('h1')
 title.classList.add('subtitle')
-title.textContent = `Калькулятор калорийности блюда`
+title.textContent = `Calorie calculator`
 
 
 let list = document.createElement('ul')
@@ -65,9 +65,9 @@ list.classList.add('list')
 for (let i = 1; i <= numberOfIngredients; i++) {
   index++; // Увеличиваем индекс
 
-  let nameOfIngredient = prompt(`Введите название ингредиента ${index}`);
-  let caloriesOfIngredient = Number(prompt(`Введите калорийность ингредиента ${index}`));
-  let weightOfIngredient = Number(prompt(`Введите вес ингредиента ${index}`));
+  let nameOfIngredient = prompt(`Enter the name of the ingredient ${index}`);
+  let caloriesOfIngredient = Number(prompt(`Enter the calorie content of the ingredient ${index} per 100 g `));
+  let weightOfIngredient = Number(prompt(`Enter the weight of ingredient ${index}`));
 
   let listItem = listItemIngredient(index, nameOfIngredient, caloriesOfIngredient, weightOfIngredient);
   list.append(listItem);
